@@ -4,9 +4,12 @@
 
 #include "Game.h"
 
+#include <algorithm>
+#include <bits/this_thread_sleep.h>
 #include <chrono>
 #include <stdexcept>
 
+#include "../Entities/Cube.h"
 #include "../Graphics/Render.h"
 #include "Scene.h"
 
@@ -29,7 +32,7 @@ namespace Game {
         _is_running = false;
 
         _render = std::make_unique<Graphics::Render>(_width, _height, _fps);
-        _scene = std::make_unique<Scene>();
+        _scene = std::make_unique<Scene>(_width, _height);
     }
 
     void Game::Run() {
@@ -38,16 +41,25 @@ namespace Game {
     }
     void Game::Stop() { _is_running = false; }
 
-    void Game::GameLoop() const {
-        const GameObject cube(5, 5, 5, 5, '.');
-        _scene->AddGameObject(cube);
+    [[noreturn]] void Game::GameLoop() const {
+        auto game_object_cube = std::make_unique<Cube>(5, 5, 10, 10, '-');
+        _scene->AddGameObject(std::move(game_object_cube));
 
-        double frame_time = 1000.0 / _fps;
+        const long long frame_time = 1000 / _fps;
 
         while (_is_running) {
-
+            auto frame_start = std::chrono::high_resolution_clock::now();
             _scene->Update();
+            _scene->Render(*_render);
             _render->RenderFrame();
+            auto frame_end = std::chrono::high_resolution_clock::now();
+
+            const auto frameTimeRenderElapsed =
+                    std::chrono::duration_cast<std::chrono::milliseconds>(frame_end - frame_start).count();
+
+            if (frameTimeRenderElapsed < frame_time) {
+                std::this_thread::sleep_for(std::chrono::milliseconds(frame_time - frameTimeRenderElapsed));
+            }
         }
     }
 

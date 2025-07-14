@@ -15,4 +15,6 @@ add_executable(ascii_ape src/main.cpp
         src/Game/Scene.h
         src/Game/GameObject.cpp
         src/Game/GameObject.h
+        src/Entities/Cube.cpp
+        src/Entities/Cube.h
 )

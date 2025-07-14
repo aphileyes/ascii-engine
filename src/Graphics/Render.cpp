@@ -10,6 +10,7 @@
 #include <string>
 
 #include "../Exceptions/RenderException.h"
+#include "../Game/GameObject.h"
 
 namespace Graphics {
 
@@ -35,7 +36,7 @@ namespace Graphics {
 
     void Render::ClearOutput() {
         for (auto& row: _back_frame_buffer) {
-            std::ranges::fill(row.begin(), row.end(), ' ');
+            std::ranges::fill(row.begin(), row.end(), '.');
         }
     }
 
@@ -46,12 +47,32 @@ namespace Graphics {
     }
 
     void Render::Draw(const Coordinates& coordinates, const unsigned char symbol = '.') {
-        if (coordinates.x > GetWidth() || coordinates.y > GetHeight()) {
-            throw Exceptions::RenderException(
-                    std::format("Coordinates out of range: (x: {}, y: {}). Valid range is: x: [0, {}], y: [0, {}].",
-                                coordinates.x, coordinates.y, _width, _height));
+        // if (coordinates.x > GetWidth() || coordinates.y > GetHeight()) {
+        //     throw Exceptions::RenderException(
+        //             std::format("Coordinates out of range: (x: {}, y: {}). Valid range is: x: [0, {}], y: [0, {}].",
+        //                         coordinates.x, coordinates.y, _width, _height));
+        // }
+        // _back_frame_buffer[coordinates.x][coordinates.y] = symbol;
+    }
+
+    void Render::DrawGameObject(const std::unique_ptr<Game::GameObject>& game_object) {
+        unsigned int x_start = game_object->GetX();
+        unsigned int y_start = game_object->GetY();
+        unsigned int object_width = game_object->GetWidth();
+        unsigned int object_height = game_object->GetHeight();
+        char symbol = game_object->GetSymbol();
+
+        for (unsigned int x = x_start; x < x_start + object_width && x < _width; ++x) {
+            for (unsigned int y = y_start; y < y_start + object_height && y < _height; ++y) {
+                if (x_start + object_width > this->GetWidth() || y_start + object_height > this->GetHeight()) {
+                    throw Exceptions::RenderException(std::format(
+                            "Coordinates out of range: (x: {}, y: {}). Valid range is: x: [0, {}], y: [0, {}].",
+                            x_start + object_width, y_start + object_height, _width, _height));
+                }
+
+                _back_frame_buffer[x][y] = symbol;
+            }
         }
-        _back_frame_buffer[coordinates.x][coordinates.y] = symbol;
     }
 
     void Render::RenderFrame() {
@@ -64,15 +85,13 @@ namespace Graphics {
                 }
             }
         }
+        ClearOutput();
         std::cout << std::flush;
-
-        FillScene('.');
-        SetCursorPosition(0, 0);
     }
 
     void Render::SetCursorPosition(const int x, const int y) {
 #ifndef _WIN32
-        throw Exceptions::RenderException("SetCursorPosition not working outside windows platform.");
+        throw Exceptions::RenderException("SetCursorPosition not working outside windosw platform.");
 #endif
         const HANDLE console_handle = GetStdHandle(STD_OUTPUT_HANDLE);
         if (console_handle == INVALID_HANDLE_VALUE) {
@@ -101,8 +120,8 @@ namespace Graphics {
 
     // --- GETTERS --- GETTERS --- GETTERS --- GETTERS --- GETTERS --- GETTERS ---
 
-    unsigned int Render::GetWidth() const { return _width - 1; }
-    unsigned int Render::GetHeight() const { return _height - 1; }
+    unsigned int Render::GetWidth() const { return _width; }
+    unsigned int Render::GetHeight() const { return _height; }
     double Render::GetFramesPerSecond() const { return _frames_per_second; }
 
 } // namespace Graphics

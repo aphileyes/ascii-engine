@@ -9,7 +9,7 @@
 namespace Game {
 
     GameObject::GameObject(const unsigned int x, unsigned int y, const unsigned int width, const unsigned int height,
-                           const char symbol) {
+                           char symbol) {
 
         if (width == 0 || height == 0) {
             throw std::invalid_argument("Width and height must be greater than zero.");
@@ -25,9 +25,8 @@ namespace Game {
         _y = y;
         _width = width;
         _height = height;
+        _symbol = symbol;
     }
-
-    void GameObject::Update(const unsigned int x, const unsigned int y) {}
 
     void GameObject::SetPosition(unsigned int x, unsigned int y) {
         _x = x;
@@ -41,9 +40,11 @@ namespace Game {
         _width = width;
         _height = height;
     }
+
     unsigned int GameObject::GetX() const { return _x; }
     unsigned int GameObject::GetY() const { return _y; }
     unsigned int GameObject::GetWidth() const { return _width; }
     unsigned int GameObject::GetHeight() const { return _height; }
+    char GameObject::GetSymbol() const { return _symbol; }
 
 } // namespace Game

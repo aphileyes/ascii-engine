@@ -18,8 +18,6 @@ namespace Game {
         void Run();
         void Stop();
 
-        // Graphics::Render* GetRenderInstance() const;
-
     private:
         std::unique_ptr<Scene> _scene;
         std::unique_ptr<Graphics::Render> _render;
@@ -29,7 +27,7 @@ namespace Game {
         unsigned int _height;
         double _fps;
 
-        void GameLoop() const;
+        [[noreturn]] void GameLoop() const;
     };
 
 } // namespace Game
