@@ -1,20 +1,16 @@
+#include <format>
 #include <iostream>
-#include "Graphics/Render.h"
+
+#include "Game/Game.h"
+
+static_assert(_WIN32, "This engine only works on windows platform.");
 
 int main() {
     try {
-        Graphics::Render render(50, 10, 60.0);
-
-        int posX = 0;
-
-        while (true) {
-            render.RenderFrame();
-
-            render.Draw(posX % render.GetWidth(), 0, '*');
-            posX++;
-        }
+        Game::Game game(50, 5, 60.0);
+        game.Run();
     } catch (std::exception& e) {
-        std::cerr << e.what();
+        std::cerr << e.what() << std::endl;
     }
     return 0;
 }

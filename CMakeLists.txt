@@ -11,4 +11,8 @@ add_executable(ascii_ape src/main.cpp
         src/Exceptions/RenderException.h
         src/Game/Game.cpp
         src/Game/Game.h
+        src/Game/Scene.cpp
+        src/Game/Scene.h
+        src/Game/GameObject.cpp
+        src/Game/GameObject.h
 )
