@@ -5,9 +5,13 @@
 #ifndef RENDER_H
 #define RENDER_H
 
+#include <memory>
 #include <vector>
 #include <windows.h>
 
+namespace Game {
+    class GameObject;
+}
 namespace Graphics {
 
     struct Coordinates {
@@ -20,9 +24,10 @@ namespace Graphics {
         Render(unsigned int width, unsigned int height, double fps);
 
         void Draw(const Coordinates& coordinates, unsigned char symbol);
+        void DrawGameObject(const std::unique_ptr<Game::GameObject>& game_object);
         void ClearOutput();
         void RenderFrame();
-        void FillScene(unsigned char symbol = '.');
+        auto FillScene(unsigned char symbol = '.') -> void;
         static void SetCursorPosition(int x, int y);
         static void SetCursorVisibility(bool visible);
         unsigned int GetWidth() const;

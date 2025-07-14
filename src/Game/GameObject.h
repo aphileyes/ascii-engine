@@ -10,10 +10,10 @@ namespace Game {
 
     class GameObject {
     public:
-        GameObject(unsigned int x, unsigned int y, unsigned int width, unsigned int height, char symbols);
-        ~GameObject() {}
+        GameObject(unsigned int x, unsigned int y, unsigned int width, unsigned int height, char symbol);
+        virtual ~GameObject() = default;
 
-        void Update(unsigned int x, unsigned int y);
+        virtual void Update() = 0;
 
         void SetPosition(unsigned int x, unsigned int y);
         void SetSize(unsigned int width, unsigned int height);
@@ -22,13 +22,14 @@ namespace Game {
         unsigned int GetY() const;
         unsigned int GetWidth() const;
         unsigned int GetHeight() const;
+        char GetSymbol() const;
 
     private:
         unsigned int _x;
         unsigned int _y;
         unsigned int _width;
         unsigned int _height;
-        std::string _symbols;
+        char _symbol;
     };
 
 } // namespace Game
