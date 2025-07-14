@@ -1,5 +1,5 @@
 //
-// Создан Aphile 14.07.2025.
+// Created by Aphile 14.07.2025.
 //
 
 #ifndef RENDER_H
@@ -9,18 +9,26 @@
 #include <windows.h>
 
 namespace Graphics {
+
+    struct Coordinates {
+        unsigned int x;
+        unsigned int y;
+    };
+
     class Render {
     public:
-        Render(const unsigned int& width, const unsigned int& height, const double& fps);
+        Render(unsigned int width, unsigned int height, double fps);
 
-        void Draw(unsigned int x_pos, unsigned int y_pos, unsigned char symbol);
+        void Draw(const Coordinates& coordinates, unsigned char symbol);
         void ClearOutput();
         void RenderFrame();
         void FillScene(unsigned char symbol = '.');
-        static void SetCursorPosition(const int x, const int y);
-        static void SetCursorVisibility(const bool visible);
+        static void SetCursorPosition(int x, int y);
+        static void SetCursorVisibility(bool visible);
         unsigned int GetWidth() const;
         unsigned int GetHeight() const;
+        double GetFramesPerSecond() const;
+
 
     private:
         unsigned int _width;

@@ -12,7 +12,16 @@
 #include "../Exceptions/RenderException.h"
 
 namespace Graphics {
-    Render::Render(const unsigned int& width, const unsigned int& height, const double& fps) {
+
+    Render::Render(const unsigned int width, const unsigned int height, const double fps) {
+        if (width == 0 || height == 0) {
+            throw Exceptions::RenderException("Width and height must be greater than 0.");
+        }
+
+        if (fps <= 0) {
+            throw Exceptions::RenderException("Fps must be greater than 0.");
+        }
+
         _width = width;
         _height = height;
         _frames_per_second = fps;
@@ -36,18 +45,13 @@ namespace Graphics {
         }
     }
 
-    void Render::Draw(const unsigned int x_pos, const unsigned int y_pos, const unsigned char symbol = '.') {
-        if (x_pos > _width || y_pos > _height) {
-            // throw Exceptions::RenderException("Coordinates out of range: (x: " + std::to_string(x_pos) +
-            //                                   ", y: " + std::to_string(y_pos) + "). Valid range is x: [0, " +
-            //                                   std::to_string(_width) + "], y: [0, " + std::to_string(_height) +
-            //                                   "].");
-
+    void Render::Draw(const Coordinates& coordinates, const unsigned char symbol = '.') {
+        if (coordinates.x > GetWidth() || coordinates.y > GetHeight()) {
             throw Exceptions::RenderException(
                     std::format("Coordinates out of range: (x: {}, y: {}). Valid range is: x: [0, {}], y: [0, {}].",
-                                x_pos, y_pos, _width, _height));
+                                coordinates.x, coordinates.y, _width, _height));
         }
-        _back_frame_buffer[x_pos][y_pos] = symbol;
+        _back_frame_buffer[coordinates.x][coordinates.y] = symbol;
     }
 
     void Render::RenderFrame() {
@@ -60,10 +64,12 @@ namespace Graphics {
                 }
             }
         }
-        FillScene('.');
         std::cout << std::flush;
+
+        FillScene('.');
         SetCursorPosition(0, 0);
     }
+
     void Render::SetCursorPosition(const int x, const int y) {
 #ifndef _WIN32
         throw Exceptions::RenderException("SetCursorPosition not working outside windows platform.");
@@ -92,8 +98,11 @@ namespace Graphics {
         cursor_info.bVisible = visible;
         SetConsoleCursorInfo(console_handle, &cursor_info);
     }
-    unsigned int Render::GetWidth() const { return _width; }
-    unsigned int Render::GetHeight() const { return _height; }
 
+    // --- GETTERS --- GETTERS --- GETTERS --- GETTERS --- GETTERS --- GETTERS ---
+
+    unsigned int Render::GetWidth() const { return _width - 1; }
+    unsigned int Render::GetHeight() const { return _height - 1; }
+    double Render::GetFramesPerSecond() const { return _frames_per_second; }
 
 } // namespace Graphics

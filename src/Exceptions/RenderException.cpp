@@ -5,8 +5,8 @@
 #include "RenderException.h"
 
 namespace Exceptions {
+
     RenderException::RenderException(const std::string& exception_str) { this->_message = "[Render] " + exception_str; }
     const char* RenderException::what() const noexcept { return this->_message.c_str(); }
-
 
 } // namespace Exceptions
