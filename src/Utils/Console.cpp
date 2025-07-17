@@ -4,6 +4,8 @@
 
 #include "Console.h"
 
+#include <stdexcept>
+
 namespace Utils {
 
     Console::Console() {
@@ -32,4 +34,4 @@ namespace Utils {
         }
     }
 
-} // namespace Utils
+}  // namespace Utils

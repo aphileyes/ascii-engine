@@ -1,33 +1,30 @@
 //
-// Created by Aphile on 14.07.2025.
+// Created by Aphile on 17.07.2025.
 //
 
 #ifndef SCENE_H
 #define SCENE_H
 #include <memory>
-#include <vector>
 
-#include "../Graphics/Render.h"
-#include "GameObject.h"
-
+#include "../Graphics/IRender.h"
 
 namespace Game {
 
-    class Scene {
+    class IScene {
     public:
-        Scene(unsigned int width, unsigned int height);
-        void AddGameObject(std::unique_ptr<GameObject> game_object);
-        void RemoveGameObject(GameObject& game_object);
-        void Update(float delta_time) const;
-        void RenderUpdates(Graphics::IRender& render) const;
+        virtual ~IScene() = default;
+        virtual void AddGameObject(std::unique_ptr<GameObject> game_object) = 0;
+        virtual void RemoveGameObject(GameObject& game_object) = 0;
+        virtual void Update(float delta_time) const = 0;
+        virtual void RenderUpdates(Graphics::IRender& render) const = 0;
 
-    private:
-        unsigned int _width;
-        unsigned int _height;
+        virtual unsigned int GetWidth() = 0;
+        virtual unsigned int GetHeight() = 0;
 
-        std::vector<std::unique_ptr<GameObject>> _game_objects;
+    protected:
+        IScene() = default;
     };
 
-} // namespace Game
+}  // namespace Game
 
-#endif // SCENE_H
+#endif  // SCENE_H

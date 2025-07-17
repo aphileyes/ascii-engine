@@ -6,16 +6,17 @@
 #define CONSOLE_H
 
 #include <memory>
-#include <stdexcept>
 #include <windows.h>
-
 
 namespace Utils {
 
     struct IConsole {
+        virtual ~IConsole() = default;
         virtual void SetCursorPosition(unsigned int x, unsigned int y) const = 0;
         virtual void SetCursorVisibility(bool visible) const = 0;
-        virtual ~IConsole() = default;
+
+    protected:
+        IConsole() = default;
     };
 
     class Console final : public IConsole {
@@ -28,6 +29,6 @@ namespace Utils {
         std::unique_ptr<HANDLE> _console_handle;
     };
 
-} // namespace Utils
+}  // namespace Utils
 
-#endif // CONSOLE_H
+#endif  // CONSOLE_H
