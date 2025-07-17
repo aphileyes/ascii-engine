@@ -7,21 +7,19 @@
 #include <memory>
 #include <vector>
 
+#include "../Graphics/Render.h"
 #include "GameObject.h"
 
 
-namespace Graphics {
-    class Render;
-}
 namespace Game {
 
     class Scene {
     public:
         Scene(unsigned int width, unsigned int height);
         void AddGameObject(std::unique_ptr<GameObject> game_object);
-        void RemoveGameObject(const std::unique_ptr<GameObject>& game_object);
-        void Update() const;
-        void Render(Graphics::Render& render) const;
+        void RemoveGameObject(GameObject& game_object);
+        void Update(float delta_time) const;
+        void RenderUpdates(Graphics::IRender& render) const;
 
     private:
         unsigned int _width;

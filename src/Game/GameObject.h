@@ -4,7 +4,6 @@
 
 #ifndef GAMEOBJECT_H
 #define GAMEOBJECT_H
-#include <string>
 
 namespace Game {
 
@@ -13,16 +12,16 @@ namespace Game {
         GameObject(unsigned int x, unsigned int y, unsigned int width, unsigned int height, char symbol);
         virtual ~GameObject() = default;
 
-        virtual void Update() = 0;
+        virtual void Update(float delta_time) = 0;
 
         void SetPosition(unsigned int x, unsigned int y);
         void SetSize(unsigned int width, unsigned int height);
 
-        unsigned int GetX() const;
-        unsigned int GetY() const;
-        unsigned int GetWidth() const;
-        unsigned int GetHeight() const;
-        char GetSymbol() const;
+        [[nodiscard]] unsigned int GetX() const;
+        [[nodiscard]] unsigned int GetY() const;
+        [[nodiscard]] unsigned int GetWidth() const;
+        [[nodiscard]] unsigned int GetHeight() const;
+        [[nodiscard]] char GetSymbol() const;
 
     private:
         unsigned int _x;

@@ -6,30 +6,26 @@
 #define GAME_H
 #include <memory>
 
-
 #include "../Graphics/Render.h"
+#include "../Utils/Console.h"
 #include "Scene.h"
 
 namespace Game {
 
     class Game {
     public:
-        Game(unsigned int width, unsigned int height, double fps);
+        explicit Game(std::unique_ptr<Graphics::IRender> render);
         void Run();
         void Stop();
 
     private:
+        void GameLoop() const;
+        bool _is_running;
+
+        std::unique_ptr<Graphics::IRender> _render;
         std::unique_ptr<Scene> _scene;
-        std::unique_ptr<Graphics::Render> _render;
-
-        bool _is_running = false;
-        unsigned int _width;
-        unsigned int _height;
-        double _fps;
-
-        [[noreturn]] void GameLoop() const;
     };
 
-} // namespace Game
+}  // namespace Game
 
-#endif // GAME_H
+#endif  // GAME_H

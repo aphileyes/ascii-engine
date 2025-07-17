@@ -19,22 +19,21 @@ namespace Game {
         _game_objects.push_back(std::move(game_object));
     }
 
-    void Scene::RemoveGameObject(const std::unique_ptr<GameObject>& game_object) {
-        std::erase_if(_game_objects,
-                      [&game_object](const std::unique_ptr<GameObject>& ptr_to_current_vector_game_object) {
-                          return &ptr_to_current_vector_game_object == &game_object;
-                      });
+    void Scene::RemoveGameObject(GameObject& game_object) {
+        std::erase_if(_game_objects, [&game_object](const std::unique_ptr<GameObject>& iterator_object) {
+            return iterator_object.get() == &game_object;
+        });
     }
 
-    void Scene::Update() const {
+    void Scene::Update(const float delta_time) const {
         for (auto& game_object: _game_objects) {
-            game_object->Update();
+            game_object->Update(delta_time);
         }
     }
 
-    void Scene::Render(Graphics::Render& render) const {
+    void Scene::RenderUpdates(Graphics::IRender& render) const {
         for (const auto& game_object: _game_objects) {
-            render.DrawGameObject(game_object);
+            render.Draw(game_object);
         }
     }
 
