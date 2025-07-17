@@ -9,10 +9,10 @@
 
 class Cube final : public Game::GameObject {
 public:
-    Cube(unsigned int x, unsigned int y, unsigned int width, unsigned int height, char symbol) :
-        GameObject(x, y, width, height, symbol) {}
+    Cube(const unsigned int x, const unsigned int y, const unsigned int width, const unsigned int height,
+         const char symbol) : GameObject(x, y, width, height, symbol) {}
 
-    void Update() override;
+    void Update(float delta_time) override;
 };
 
 

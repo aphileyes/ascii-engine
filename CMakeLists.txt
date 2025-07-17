@@ -2,7 +2,8 @@ cmake_minimum_required(VERSION 3.31)
 project(ascii_ape)
 
 set(CMAKE_CXX_STANDARD 26)
-set(CMAKE_EXE_LINKER_FLAGS ${CMAKE_EXE_LINKER_FLAGS} "-static")
+
+include_directories(F:/Projects/CLion/ascii-ape/libraries/di-1.3.2/include)
 
 add_executable(ascii_ape src/main.cpp
         src/Graphics/Render.cpp
@@ -17,4 +18,8 @@ add_executable(ascii_ape src/main.cpp
         src/Game/GameObject.h
         src/Entities/Cube.cpp
         src/Entities/Cube.h
+        src/IO/InputManager.cpp
+        src/IO/InputManager.h
+        src/Utils/Console.cpp
+        src/Utils/Console.h
 )

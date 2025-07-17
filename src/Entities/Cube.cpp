@@ -6,8 +6,8 @@
 
 #include "../Game/Game.h"
 
-void Cube::Update() {
-    SetPosition(GetX() + 3, 0);
+void Cube::Update(float delta_time) {
+    SetPosition(GetX() + 1, 0);
 
     if (GetX() == 110) {
         SetPosition(0, 0);

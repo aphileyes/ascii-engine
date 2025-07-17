@@ -15,7 +15,7 @@ namespace Game {
             throw std::invalid_argument("Width and height must be greater than zero.");
         }
 
-        // 32 ascii code equals space or ' '
+        // 32 ascii code = ' '
         // Nam takogo ne nado.
         if (symbol == 32) {
             throw std::invalid_argument("Symbol cannot be empty.");
