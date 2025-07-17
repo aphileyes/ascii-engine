@@ -1,18 +1,15 @@
 //
-// Created by Aphile on 14.07.2025.
+// Created by Aphile on 17.07.2025.
 //
 
-#include "Render.h"
+#include "ASCIIRender.h"
 
 #include <algorithm>
-#include <format>
 #include <iostream>
 
-#include "../Exceptions/RenderException.h"
-#include "../Game/GameObject.h"
+#include "../../Exceptions/RenderException.h"
 
 namespace Graphics {
-
     ASCIIRender::ASCIIRender(const unsigned int width, const unsigned int height, const double fps,
                              std::unique_ptr<Utils::IConsole> console) :
         _width(width), _height(height), _frames_per_second(fps), _console(std::move(console)) {
@@ -32,13 +29,28 @@ namespace Graphics {
     }
 
     void ASCIIRender::RenderFrame() {
-        for (int y = 0; y < _height; ++y) {
-            for (int x = 0; x < _width; ++x) {
+        for (unsigned int y = 0; y < GetHeight(); ++y) {
+            bool is_line_changed = false;
+            std::string current_line;
+
+            for (unsigned int x = 0; x < GetWidth(); ++x) {
+                // Рисуем только то, что обновилось, иначе -
+                // в current_line добавляется информация из предыдущего кадра.
+
+                // TODO: придумать такую реализацию, чтобы можно было воспользоваться memcpy
+                // TODO: для экстра оптимизации.
                 if (_front_frame_buffer[x][y] != _back_frame_buffer[x][y]) {
-                    _console->SetCursorPosition(x, y);
-                    std::cout << _back_frame_buffer[x][y];
+                    current_line += _back_frame_buffer[x][y];
                     _front_frame_buffer[x][y] = _back_frame_buffer[x][y];
+                    is_line_changed = true;
+                } else {
+                    current_line += _front_frame_buffer[x][y];
                 }
+            }
+
+            if (is_line_changed) {
+                _console->SetCursorPosition(0, y);
+                std::cout << current_line;
             }
         }
         ResetFrame();
@@ -60,15 +72,14 @@ namespace Graphics {
         const char symbol = game_object->GetSymbol();
 
         if (x_start + object_width > this->GetWidth() || y_start + object_height > this->GetHeight() ||
-            x_start + object_width < 0 || y_start + object_height < 0 || x_start > this->GetWidth() ||
-            y_start > this->GetHeight()) {
+            x_start > this->GetWidth() || y_start > this->GetHeight()) {
             throw Exceptions::RenderException(
                     std::format("Coordinates out of range: (x: {}, y: {}). Valid range is: x: [0, {}], y: [0, {}].",
                                 x_start + object_width, y_start + object_height, _width, _height));
         }
+
         for (unsigned int x = x_start; x < x_start + object_width && x < _width; ++x) {
             for (unsigned int y = y_start; y < y_start + object_height && y < _height; ++y) {
-
                 _back_frame_buffer[x][y] = symbol;
             }
         }
@@ -78,4 +89,4 @@ namespace Graphics {
     unsigned int ASCIIRender::GetHeight() const { return _height; }
     double ASCIIRender::GetFramesPerSecond() const { return _frames_per_second; }
 
-} // namespace Graphics
+}  // namespace Graphics
