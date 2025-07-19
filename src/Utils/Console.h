@@ -10,23 +10,15 @@
 
 namespace Utils {
 
-    struct IConsole {
-        virtual ~IConsole() = default;
-        virtual void SetCursorPosition(unsigned int x, unsigned int y) const = 0;
-        virtual void SetCursorVisibility(bool visible) const = 0;
-
-    protected:
-        IConsole() = default;
-    };
-
-    class Console final : public IConsole {
+    class Console {
     public:
         Console();
-        void SetCursorPosition(unsigned int x, unsigned int y) const override;
-        void SetCursorVisibility(bool visible) const override;
+        void SetCursorPosition(unsigned int x, unsigned int y) const;
+        void SetCursorVisibility(bool visible) const;
+        void SetWindowSize(COORD size) const;
 
     private:
-        std::unique_ptr<HANDLE> _console_handle;
+        std::unique_ptr<HANDLE> _c_handle;
     };
 
 }  // namespace Utils

@@ -10,23 +10,9 @@
 
 namespace Scenes {
 
-    class TestScene final : public Game::IScene {
+    class TestScene final : public Game::Scene {
     public:
-        TestScene(unsigned int width, unsigned int height);
-
-        void AddGameObject(std::unique_ptr<Game::GameObject> game_object) override;
-        void RemoveGameObject(Game::GameObject& game_object) override;
-        void Update(float delta_time) const override;
-        void RenderUpdates(Graphics::IRender& render) const override;
-
-        [[nodiscard]] unsigned int GetWidth() override;
-        [[nodiscard]] unsigned int GetHeight() override;
-
-    private:
-        unsigned int _width;
-        unsigned int _height;
-
-        std::vector<std::unique_ptr<Game::GameObject>> game_objects;
+        TestScene(int width, int height);
     };
 
 }  // namespace Scenes
