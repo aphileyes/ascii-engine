@@ -6,45 +6,40 @@
 
 #include <stdexcept>
 
+#include "../Graphics/Renders/ASCIIRender.h"
+#include "boost/di.hpp"
+
 namespace Game {
 
-    GameObject::GameObject(const unsigned int x, unsigned int y, const unsigned int width, const unsigned int height,
-                           char symbol) {
-
-        if (width == 0 || height == 0) {
-            throw std::invalid_argument("Width and height must be greater than zero.");
+    GameObject::GameObject(Position position, Size size, char symbol) {
+        if (position.x < 0 || position.y < 0) {
+            throw std::invalid_argument("GameObject spawn position must be greater than less zero.");
         }
 
-        // 32 ascii code = ' '
-        // Nam takogo ne nado.
-        if (symbol == 32) {
+        _position = position;
+
+        if (symbol == VK_SPACE) {
             throw std::invalid_argument("Symbol cannot be empty.");
         }
 
-        _x = x;
-        _y = y;
-        _width = width;
-        _height = height;
         _symbol = symbol;
+        _size = size;
     }
 
-    void GameObject::SetPosition(unsigned int x, unsigned int y) {
-        _x = x;
-        _y = y;
-    }
+    void GameObject::SetPosition(Position position) { _position = position; }
 
-    void GameObject::SetSize(const unsigned int width, const unsigned int height) {
-        if (width == 0 || height == 0) {
-            throw std::invalid_argument("Width and height must be greater than zero.");
+    void GameObject::SetSize(Size size) {
+        if (size.width == 0 || size.height == 0) {
+            throw std::invalid_argument("GameObject size cannot be empty.");
         }
-        _width = width;
-        _height = height;
+
+        _size = size;
     }
 
-    unsigned int GameObject::GetX() const { return _x; }
-    unsigned int GameObject::GetY() const { return _y; }
-    unsigned int GameObject::GetWidth() const { return _width; }
-    unsigned int GameObject::GetHeight() const { return _height; }
+    int GameObject::GetX() const { return _position.x; }
+    int GameObject::GetY() const { return _position.y; }
+    int GameObject::GetWidth() const { return _size.width; }
+    int GameObject::GetHeight() const { return _size.height; }
     char GameObject::GetSymbol() const { return _symbol; }
 
-} // namespace Game
+}  // namespace Game

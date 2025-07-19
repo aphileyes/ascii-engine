@@ -6,17 +6,7 @@
 
 namespace Scenes {
 
-    TestScene::TestScene(const unsigned int width, const unsigned int height) {
-        _width = width;
-        _height = height;
-    }
+    TestScene::TestScene(const int width, const int height) : Scene(width, height) {}
 
-    void TestScene::AddGameObject(std::unique_ptr<Game::GameObject> game_object) {}
-    void TestScene::RemoveGameObject(Game::GameObject& game_object) {}
-    void TestScene::Update(float delta_time) const {}
-    void TestScene::RenderUpdates(Graphics::IRender& render) const {}
-
-    unsigned int TestScene::GetWidth() { return _width; }
-    unsigned int TestScene::GetHeight() { return _height; }
 
 }  // namespace Scenes

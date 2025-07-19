@@ -7,23 +7,25 @@ include_directories(F:/Projects/CLion/ascii-ape/libraries/di-1.3.2/include)
 
 add_executable(ascii_ape src/main.cpp
         src/Graphics/IRender.h
-        src/Exceptions/RenderException.cpp
-        src/Exceptions/RenderException.h
         src/Game/Game.cpp
         src/Game/Game.h
         src/Game/GameObject.cpp
         src/Game/GameObject.h
-        src/Entities/Cube.cpp
-        src/Entities/Cube.h
-        src/IO/InputManager.cpp
-        src/IO/InputManager.h
+        src/Game/Entities/Actor.cpp
+        src/Game/Entities/Actor.h
+        src/IO/IInput.h
         src/Utils/Console.cpp
         src/Utils/Console.h
-        src/Logger/Logger.cpp
-        src/Logger/Logger.h
         src/Scenes/TestScene.cpp
         src/Scenes/TestScene.h
-        src/Game/Scene.h
         src/Graphics/Renders/ASCIIRender.cpp
         src/Graphics/Renders/ASCIIRender.h
+        src/IO/Handlers/Input.cpp
+        src/IO/Handlers/Input.h
+        src/Game/EntityAlive.cpp
+        src/Game/EntityAlive.h
+        src/IO/Controllers/ActorController.cpp
+        src/IO/Controllers/ActorController.h
+        src/Game/Scene.cpp
+        src/Game/Scene.h
 )

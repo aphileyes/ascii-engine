@@ -13,22 +13,26 @@ namespace Graphics {
 
     class ASCIIRender final : public IRender {
     public:
-        ASCIIRender(unsigned int width, unsigned int height, double fps, std::unique_ptr<Utils::IConsole> console);
+        ASCIIRender(int width, int height, int fps, std::unique_ptr<Utils::Console> console);
 
-        void Draw(const std::unique_ptr<Game::GameObject>& game_object) override;
+        void Draw(const std::shared_ptr<Game::GameObject>& game_object) override;
         void ResetFrame() override;
         void RenderFrame() override;
-        [[nodiscard]] unsigned GetWidth() const override;
-        [[nodiscard]] unsigned GetHeight() const override;
-        [[nodiscard]] double GetFramesPerSecond() const override;
+
+        [[nodiscard]]
+        unsigned GetWidth() const override;
+        [[nodiscard]]
+        unsigned GetHeight() const override;
+        [[nodiscard]]
+        int GetFramesPerSecond() const override;
 
     private:
         unsigned int _width;
         unsigned int _height;
 
-        double _frames_per_second;
+        int _frames_per_second;
 
-        std::unique_ptr<Utils::IConsole> _console;
+        std::unique_ptr<Utils::Console> _console;
 
         std::vector<std::vector<char>> _front_frame_buffer;
         std::vector<std::vector<char>> _back_frame_buffer;
