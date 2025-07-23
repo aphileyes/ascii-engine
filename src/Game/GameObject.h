@@ -19,10 +19,10 @@ namespace Game {
             int height;
         };
 
-        GameObject(Position position, Size size, char symbol);
+        GameObject(const Position& position, const Size& size, char symbol);
         virtual ~GameObject() = default;
 
-        virtual void Update() = 0;
+        virtual void Update(float delta_time) = 0;
 
         void SetPosition(Position position);
         void SetSize(Size size);

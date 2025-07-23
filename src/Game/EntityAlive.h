@@ -10,11 +10,14 @@ namespace Game {
 
     class EntityAlive : public GameObject {
     public:
-        EntityAlive(Position position, Size size, char symbol, float health) : GameObject(position, size, symbol) {
-            _health = health;
-        }
+        EntityAlive(Position position, Size size, char symbol, float health);
 
-        void Update() override = 0;
+        [[nodiscard]]
+        float GetHealth() const {
+            return _health;
+        };
+
+        void SetHealth(float health) { _health = health; }
 
     private:
         float _health;

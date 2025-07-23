@@ -4,4 +4,11 @@
 
 #include "EntityAlive.h"
 
-namespace Game {}  // namespace Game
+namespace Game {
+
+    EntityAlive::EntityAlive(Position position, Size size, char symbol, float health) :
+        GameObject(position, size, symbol) {
+        _health = health;
+    }
+
+}  // namespace Game

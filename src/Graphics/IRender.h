@@ -10,6 +10,7 @@
 #include "../Game/GameObject.h"
 
 namespace Graphics {
+
     class IRender {
     public:
         virtual ~IRender() = default;

@@ -10,49 +10,28 @@
 namespace IO {
 
     Input::Input() {
-        _key_buffer.resize(128);
-        std::iota(_key_buffer.begin(), _key_buffer.end(), 0);
+        _keys.resize(128);
+        std::iota(_keys.begin(), _keys.end(), 0);
+        _last_frame_input.resize(_keys.size(), false);
     }
 
     void Input::Update() {
         _input_events.clear();
 
-        for (const auto& key_code: _key_buffer) {
-            if (GetAsyncKeyState(key_code)) {
+        for (const auto& key_code: _keys) {
+            const auto key_state = GetAsyncKeyState(key_code);
+
+            bool is_pressed = (key_state & KEY_PRESSED_MASK) != 0;
+
+            if (is_pressed && !_last_frame_input[key_code]) {
                 _input_events.push_back({KEY_PRESSED, key_code});
+            } else if (is_pressed && _last_frame_input[key_code]) {
+                _input_events.push_back({KEY_HOLD, key_code});
+            } else if (!is_pressed && _last_frame_input[key_code]) {
+                _input_events.push_back({KEY_RELEASED, key_code});
             }
+            _last_frame_input[key_code] = is_pressed;
         }
-
-        // for (int i = 0; i < _key_buffer.size(); ++i) {
-        //     _key_buffer.push_back(i);
-        // }
-
-        // BYTE keyboard_state[256];
-        // if (GetKeyboardState(keyboard_state)) {
-        //     for (int key = 0; key < 256; ++key) {
-        //         if (GetAsyncKeyState(keyboard_state[key])) {
-        //             _input_events.push_back({KEY_PRESSED, static_cast<char>(key)});
-        //         }
-        //     }
-        // } else {
-        //     throw std::runtime_error(std::format("Failed to get keyboard state. Last error: {}", GetLastError()));
-        // }
-
-        // if (GetKeyState('W') & 0x80) {
-        //     _input_events.push_back({KEY_PRESSED, 'W'});
-        // }
-        //
-        // if (GetKeyState('A') & 0x80) {
-        //     _input_events.push_back({KEY_PRESSED, 'A'});
-        // }
-        //
-        // if (GetKeyState('S') & 0x80) {
-        //     _input_events.push_back({KEY_PRESSED, 'S'});
-        // }
-        //
-        // if (GetKeyState('D') & 0x80) {
-        //     _input_events.push_back({KEY_PRESSED, 'D'});
-        // }
     }
 
     std::vector<InputEvent> Input::GetInputEvents() const { return _input_events; }

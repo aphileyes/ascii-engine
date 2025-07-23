@@ -13,9 +13,6 @@ namespace Game {
         _health = health;
     }
 
-    void Actor::Update() {}
-
-    float Actor::GetHealth() const { return _health; }
-
+    void Actor::Update(float delta_time) {}
 
 }  // namespace Game
