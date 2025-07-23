@@ -11,28 +11,27 @@
 
 namespace Game {
 
-    GameObject::GameObject(Position position, Size size, char symbol) {
+    GameObject::GameObject(const Position& position, const Size& size, char symbol) :
+        _symbol(symbol), _size(size), _position(position) {
         if (position.x < 0 || position.y < 0) {
-            throw std::invalid_argument("GameObject spawn position must be greater than less zero.");
+            throw std::invalid_argument("GameObject spawn position must be greater than or equal to zero.");
         }
-
-        _position = position;
 
         if (symbol == VK_SPACE) {
             throw std::invalid_argument("Symbol cannot be empty.");
         }
 
-        _symbol = symbol;
-        _size = size;
+        if (size.width == 0 || size.height == 0) {
+            throw std::invalid_argument("GameObject size cannot be empty.");
+        }
     }
 
     void GameObject::SetPosition(Position position) { _position = position; }
 
     void GameObject::SetSize(Size size) {
-        if (size.width == 0 || size.height == 0) {
+        if (size.width <= 0 || size.height <= 0) {
             throw std::invalid_argument("GameObject size cannot be empty.");
         }
-
         _size = size;
     }
 

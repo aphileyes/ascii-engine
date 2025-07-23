@@ -20,7 +20,7 @@ namespace Game {
     void Scene::AddGameObject(const std::shared_ptr<GameObject>& game_object) { _game_objects.push_back(game_object); }
 
     void Scene::RemoveGameObject(const std::shared_ptr<GameObject>& game_object) {
-        if (_game_objects.size() == 0) {
+        if (_game_objects.empty()) {
             return;
         }
 
@@ -29,13 +29,11 @@ namespace Game {
         });
     }
 
-    void Scene::Update() const {
+    void Scene::Update(const std::unique_ptr<Graphics::IRender>& render, float delta_time) const {
         for (const auto& game_object: _game_objects) {
-            game_object->Update();
+            game_object->Update(delta_time);
         }
-    }
 
-    void Scene::RenderUpdates(const std::unique_ptr<Graphics::IRender>& render) const {
         for (const auto& game_object: _game_objects) {
             render->Draw(game_object);
         }

@@ -9,7 +9,7 @@
 #include "../Graphics/IRender.h"
 #include "../IO/Controllers/ActorController.h"
 #include "../IO/IInput.h"
-#include "Entities/Actor.h"
+#include "Actor.h"
 #include "Scene.h"
 
 namespace Game {

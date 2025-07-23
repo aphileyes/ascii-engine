@@ -2,9 +2,10 @@
 // Created by Aphile on 18.07.2025.
 //
 
-#ifndef WINDOWSINPUTHANDLER_H
-#define WINDOWSINPUTHANDLER_H
+#ifndef INPUT_H
+#define INPUT_H
 #include <Windows.h>
+#include <map>
 
 #include "../IInput.h"
 
@@ -14,13 +15,17 @@ namespace IO {
     public:
         Input();
         void Update() override;
+
+        [[nodiscard]]
         std::vector<InputEvent> GetInputEvents() const override;
 
     private:
-        std::vector<BYTE> _key_buffer;
+        std::vector<BYTE> _keys;
+        std::vector<bool> _last_frame_input;
+
         std::vector<InputEvent> _input_events;
     };
 
 }  // namespace IO
 
-#endif  // WINDOWSINPUTHANDLER_H
+#endif  // INPUT_H

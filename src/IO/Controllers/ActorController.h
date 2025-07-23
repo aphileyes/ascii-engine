@@ -8,7 +8,7 @@
 #include <memory>
 #include <vector>
 
-#include "../../Game/Entities/Actor.h"
+#include "../../Game/Actor.h"
 #include "../../Game/GameObject.h"
 #include "../IInput.h"
 
@@ -18,7 +18,7 @@ namespace Game {
     public:
         explicit ActorController(const std::shared_ptr<Actor>& actor);
 
-        void Update(const std::vector<IO::InputEvent>& input_events);
+        void Update(const std::vector<IO::InputEvent>& input_events, float delta_time);
 
     private:
         std::shared_ptr<GameObject> _actor;

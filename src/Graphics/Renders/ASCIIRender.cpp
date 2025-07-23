@@ -8,6 +8,7 @@
 #include <iostream>
 
 namespace Graphics {
+
     ASCIIRender::ASCIIRender(int width, int height, int fps, std::unique_ptr<Utils::Console> console) {
         if (width <= 0 || height <= 0) {
             throw std::invalid_argument("Width and height must be greater than 0.");
@@ -17,12 +18,13 @@ namespace Graphics {
         _height = height;
 
         if (fps < 0) {
+            throw std::runtime_error("Fps must be 0 (disable fps lock) or greater.");
         }
 
         _frames_per_second = fps;
 
-        _front_frame_buffer.resize(width, std::vector<char>(height, ' '));
-        _back_frame_buffer.resize(width, std::vector<char>(height, '.'));
+        _front_frame_buffer.resize(width, std::vector(height, ' '));
+        _back_frame_buffer.resize(width, std::vector(height, '.'));
 
         _console = std::move(console);
 
@@ -60,15 +62,19 @@ namespace Graphics {
     }
 
     void ASCIIRender::Draw(const std::shared_ptr<Game::GameObject>& game_object) {
-        int x_start = game_object->GetX();
-        int y_start = game_object->GetY();
-
-        int object_width = game_object->GetWidth();
-        int object_height = game_object->GetHeight();
         char symbol = game_object->GetSymbol();
 
-        for (int x = x_start; x < x_start + object_width; ++x) {
-            for (int y = y_start; y < y_start + object_height; ++y) {
+        int object_width = game_object->GetX() + game_object->GetWidth();
+        int object_height = game_object->GetY() + game_object->GetHeight();
+
+        int x_clamp = std::clamp<int>(game_object->GetX(), 0, GetWidth());
+        int y_clamp = std::clamp<int>(game_object->GetY(), 0, GetHeight());
+
+        int x_object_width_clamp = std::clamp<int>(object_width, 0, GetWidth());
+        int y_object_height_clamp = std::clamp<int>(object_height, 0, GetHeight());
+
+        for (int x = x_clamp; x < x_object_width_clamp; ++x) {
+            for (int y = y_clamp; y < y_object_height_clamp; ++y) {
                 _back_frame_buffer[x][y] = symbol;
             }
         }

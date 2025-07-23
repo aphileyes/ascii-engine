@@ -4,8 +4,8 @@
 
 #ifndef ACTOR_H
 #define ACTOR_H
-#include "../EntityAlive.h"
-#include "../GameObject.h"
+#include "EntityAlive.h"
+#include "GameObject.h"
 
 namespace Game {
 
@@ -13,10 +13,7 @@ namespace Game {
     public:
         Actor(Position position, Size size, char symbol, float health);
 
-        void Update() override;
-
-        [[nodiscard]]
-        float GetHealth() const;
+        void Update(float delta_time) override;
 
     private:
         float _health;
