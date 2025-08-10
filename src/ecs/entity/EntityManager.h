@@ -42,7 +42,8 @@ namespace Entity {
             }
 
             auto& components_map = entity_map[entity];
-            if (components_map.find(std::type_index(typeid(T))) == components_map.end()) {
+            if (components_map.find(std::type_index(typeid(T))) ==
+                components_map.end()) {
                 return;
             }
             components_map.erase(std::type_index(typeid(T)));
@@ -50,10 +51,12 @@ namespace Entity {
 
         template <typename T>
         std::shared_ptr<T> GetComponent(Entity entity) {
-            if (!_components.contains(entity) || !_components[entity].contains(std::type_index(typeid(T)))) {
+            if (!_components.contains(entity) ||
+                !_components[entity].contains(std::type_index(typeid(T)))) {
                 return nullptr;
             }
-            return std::any_cast<std::shared_ptr<T>>(_components[entity][std::type_index(typeid(T))]);
+            return std::any_cast<std::shared_ptr<T>>(
+                _components[entity][std::type_index(typeid(T))]);
         }
 
         template <typename... T>
@@ -71,7 +74,9 @@ namespace Entity {
 
     private:
         Entity _entity_counter = 0;
-        std::unordered_map<Entity, std::unordered_map<std::type_index, std::any>> _components;
+        std::unordered_map<Entity,
+                           std::unordered_map<std::type_index, std::any>>
+            _components;
     };
 
 }  // namespace Entity

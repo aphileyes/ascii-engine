@@ -14,7 +14,8 @@ namespace Graphics {
     public:
         Renderer(int width, int height);
 
-        void DrawObject(const Component::Position& position, const Component::Size size,
+        void DrawObject(const Component::Position& position,
+                        const Component::Size size,
                         const Component::Sprite& sprite) override;
         void ResetFrame() override;
         void RenderFrame() override;

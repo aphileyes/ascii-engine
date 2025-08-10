@@ -14,7 +14,8 @@ namespace System {
     class ActorController {
     public:
         ActorController() = default;
-        void Update(Entity::EntityManager& entity_manager, const std::vector<IO::InputEvent>& input_events);
+        void Update(Entity::EntityManager& entity_manager,
+                    const std::vector<IO::InputEvent>& input_events);
         std::vector<std::type_index> GetRequiredComponents();
 
     private:
