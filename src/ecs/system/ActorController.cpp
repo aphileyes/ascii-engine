@@ -12,13 +12,9 @@
 
 namespace System {
 
-    void ActorController::Update(
-        Entity::EntityManager& entity_manager,
-        const std::vector<IO::InputEvent>& input_events) {
-        for (auto entity :
-             entity_manager.GetEntitiesWithComponent<Component::Position>()) {
-            auto position =
-                entity_manager.GetComponent<Component::Position>(entity);
+    void ActorController::Update(Entity::EntityManager& entity_manager, const std::vector<IO::InputEvent>& input_events) {
+        for (auto entity : entity_manager.GetEntitiesWithComponent<Component::Position>()) {
+            auto position = entity_manager.GetComponent<Component::Position>(entity);
 
             for (auto [type, key] : input_events) {
                 if (type == IO::KEY_HOLD)
