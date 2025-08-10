@@ -3,30 +3,25 @@ project(ascii_engine)
 
 set(CMAKE_CXX_STANDARD 26)
 
-include_directories(F:/Projects/CLion/ascii-engine/libraries/di-1.3.2/include)
-
 add_executable(ascii_engine src/main.cpp
-        src/Graphics/IRender.h
-        src/Game/Game.cpp
-        src/Game/Game.h
-        src/Game/GameObject.cpp
-        src/Game/GameObject.h
-        src/Game/Actor.cpp
-        src/Game/Actor.h
-        src/IO/IInput.h
-        src/Utils/Console.cpp
-        src/Utils/Console.h
-        src/Graphics/Renders/ASCIIRender.cpp
-        src/Graphics/Renders/ASCIIRender.h
-        src/IO/Handlers/Input.cpp
-        src/IO/Handlers/Input.h
-        src/Game/EntityAlive.cpp
-        src/Game/EntityAlive.h
-        src/IO/Controllers/ActorController.cpp
-        src/IO/Controllers/ActorController.h
-        src/Game/Scene.cpp
-        src/Game/Scene.h
-        src/Factories/EntityFactory.cpp
-        src/Factories/EntityFactory.h
-        src/IO/KeyCodes.h
+        src/core/graphics/IRender.h
+        src/core/engine/io/IInput.h
+        src/core/engine/Utils/Console.cpp
+        src/core/engine/Utils/Console.h
+        src/core/graphics/Renderer.cpp
+        src/core/graphics/Renderer.h
+        src/core/engine/io/KeyCodes.h
+        src/ecs/entity/EntityManager.h
+        src/ecs/component/Position.h
+        src/ecs/component/Sprite.h
+        src/ecs/component/Health.h
+        src/ecs/system/ActorController.cpp
+        src/ecs/system/ActorController.h
+        src/core/engine/io/InputReceiver.cpp
+        src/core/engine/io/InputReceiver.h
+        src/ecs/system/Canvas.cpp
+        src/ecs/system/Canvas.h
+        src/ecs/component/Size.h
+        src/core/engine/Engine.cpp
+        src/core/engine/Engine.h
 )
