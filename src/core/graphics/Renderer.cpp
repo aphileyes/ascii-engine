@@ -16,8 +16,7 @@ namespace Graphics {
 
     Renderer::Renderer(int width, int height) {
         if (width <= 0 || height <= 0) {
-            throw std::invalid_argument(
-                "Width and height must be greater than 0.");
+            throw std::invalid_argument("Width and height must be greater than 0.");
         }
 
         width_ = width;
@@ -42,8 +41,7 @@ namespace Graphics {
             }
 
             if (is_line_changed) {
-                SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),
-                                         {0, static_cast<short>(y)});
+                SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), {0, static_cast<short>(y)});
                 std::cout << scanline;
             }
         }
@@ -56,9 +54,7 @@ namespace Graphics {
         }
     }
 
-    void Renderer::DrawObject(const Component::Position& position,
-                              const Component::Size size,
-                              const Component::Sprite& sprite) {
+    void Renderer::DrawObject(const Component::Position& position, const Component::Size size, const Component::Sprite& sprite) {
         char symbol = sprite.symbol;
 
         int object_x = position.x;
@@ -74,8 +70,7 @@ namespace Graphics {
         int y_clamp = std::clamp<int>(object_y, 0, GetHeight());
 
         int x_object_right_clamp = std::clamp<int>(object_right, 0, GetWidth());
-        int y_object_bottom_clamp =
-            std::clamp<int>(object_bottom, 0, GetHeight());
+        int y_object_bottom_clamp = std::clamp<int>(object_bottom, 0, GetHeight());
 
         for (int x = x_clamp; x < x_object_right_clamp; ++x) {
             for (int y = y_clamp; y < y_object_bottom_clamp; ++y) {
@@ -98,8 +93,7 @@ namespace Graphics {
 
     void Renderer::SetStartRenderFromRow(int row_number) {
         if (row_number < 0) {
-            MessageBox(GetConsoleWindow(), "Govna poel?", "Dryjo4ek",
-                       MB_OK | MB_ICONERROR);
+            MessageBox(GetConsoleWindow(), "Govna poel?", "Dryjo4ek", MB_OK | MB_ICONERROR);
             return;
         }
         start_render_from_row_ = row_number;

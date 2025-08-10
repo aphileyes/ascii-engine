@@ -17,9 +17,7 @@ namespace Graphics {
     public:
         virtual ~IRender() = default;
 
-        virtual void DrawObject(const Component::Position& position,
-                                const Component::Size size,
-                                const Component::Sprite& sprite) = 0;
+        virtual void DrawObject(const Component::Position& position, const Component::Size size, const Component::Sprite& sprite) = 0;
         virtual void ResetFrame() = 0;
         virtual void RenderFrame() = 0;
 

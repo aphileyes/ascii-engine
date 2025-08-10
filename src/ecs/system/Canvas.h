@@ -12,8 +12,7 @@ namespace System {
     class Canvas {
     public:
         Canvas() = default;
-        void Update(Entity::EntityManager& entity_manager,
-                    Graphics::Renderer& render);
+        void Update(Entity::EntityManager& entity_manager, Graphics::Renderer& render);
     };
 
 }  // namespace System
