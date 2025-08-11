@@ -21,11 +21,9 @@ namespace IO {
 
     void InputReceiver::Update() {
         _current_frame_input_events.clear();
-
         for (int key = 0; key < 256; ++key) {
             auto key_state = GetAsyncKeyState(key);
             auto is_key_pressed_in_current_frame = key_state & IO::KEY_PRESSED_MASK;
-
             if (is_key_pressed_in_current_frame && _last_frame_input_events[key].type != IO::KEY_PRESSED) {
                 _current_frame_input_events.push_back({IO::KEY_PRESSED, key});
             } else if (is_key_pressed_in_current_frame && _last_frame_input_events[key].type == IO::KEY_PRESSED) {
