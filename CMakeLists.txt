@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.31)
 project(ascii_engine)
 
 set(CMAKE_CXX_STANDARD 26)
-
 add_executable(ascii_engine src/main.cpp
         src/core/graphics/IRender.h
         src/core/engine/io/IInput.h
@@ -24,4 +23,7 @@ add_executable(ascii_engine src/main.cpp
         src/ecs/component/Size.h
         src/core/engine/Engine.cpp
         src/core/engine/Engine.h
+        src/core/graphics/Renderer.cpp
+        src/core/engine/scheduler/Scheduler.cpp
+        src/core/engine/scheduler/Scheduler.h
 )
