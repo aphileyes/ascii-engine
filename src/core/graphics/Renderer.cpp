@@ -90,17 +90,4 @@ namespace Graphics {
     }
 
     /* -------------------- SETTERS -------------------- */
-
-    void Renderer::SetStartRenderFromRow(int row_number) {
-        if (row_number < 0) {
-            MessageBox(GetConsoleWindow(), "Govna poel?", "Dryjo4ek", MB_OK | MB_ICONERROR);
-            return;
-        }
-        start_render_from_row_ = row_number;
-    }
-
-    int Renderer::GetStartRenderFromRow() {
-        return start_render_from_row_;
-    }
-
 }  // namespace Graphics
