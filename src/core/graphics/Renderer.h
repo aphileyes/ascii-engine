@@ -6,23 +6,25 @@
 #define ASCIIRENDER_H
 #include <vector>
 
-#include "IRender.h"
+#include "../../ecs/component/Position.h"
+#include "../../ecs/component/Size.h"
+#include "../../ecs/component/Sprite.h"
 
 namespace Graphics {
 
-    class Renderer final : public IRender {
+    class Renderer {
     public:
         Renderer(int width, int height);
 
-        void DrawObject(const Component::Position& position, const Component::Size size, const Component::Sprite& sprite) override;
-        void ResetFrame() override;
-        void RenderFrame() override;
+        void DrawObject(const Component::Position& position, const Component::Size size, const Component::Sprite& sprite);
+        void ResetFrame();
+        void RenderFrame();
 
         void SetStartRenderFromRow(int row_number);
         int GetStartRenderFromRow();
 
-        [[nodiscard]] int GetWidth() const override;
-        [[nodiscard]] int GetHeight() const override;
+        [[nodiscard]] int GetWidth() const;
+        [[nodiscard]] int GetHeight() const;
 
     private:
         int width_;

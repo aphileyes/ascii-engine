@@ -21,11 +21,41 @@
 #include <iostream>
 #include <thread>
 
+
 #include "../../ecs/component/Health.h"
 #include "../../ecs/component/Position.h"
 #include "../../ecs/component/Size.h"
 #include "../../ecs/component/Sprite.h"
+#include "scheduler/Scheduler.h"
 #include "utils/Console.h"
+
+class SRender : public Scheduler::IUpdatable {
+public:
+    void SchedulerUpdate() override {
+        std::cout << "[SRender] Update()" << std::endl;
+    }
+};
+
+class SInputReceiver : public Scheduler::IUpdatable {
+public:
+    void SchedulerUpdate() override {
+        std::cout << "[SInputReceiver] Update()" << std::endl;
+    }
+};
+
+class SPhysics : public Scheduler::IUpdatable {
+public:
+    void SchedulerUpdate() override {
+        std::cout << "[SPhysics] Update()" << std::endl;
+    }
+};
+
+class SActorController : public Scheduler::IUpdatable {
+public:
+    void SchedulerUpdate() override {
+        std::cout << "[SActorController] Update()" << std::endl;
+    }
+};
 
 namespace Engine {
 
@@ -51,58 +81,73 @@ namespace Engine {
         entity_manager_->AddComponent<Component::Position>(actor, std::make_shared<Component::Position>(1, 1));
         entity_manager_->AddComponent<Component::Size>(actor, std::make_shared<Component::Size>(5, 3));
 
-        auto accumulated_delta_time = std::chrono::nanoseconds(0);
-        size_t fixed_update_step = SECOND_IN_NANOSECONDS / 30.0f;
+        Scheduler::Scheduler* scheduler = new Scheduler::Scheduler();
+        SRender* render = new SRender();
+        SInputReceiver* inputReceiver = new SInputReceiver();
+        SPhysics* physics = new SPhysics();
+        SActorController* actor_controller = new SActorController();
 
-        auto last_frame_time = std::chrono::high_resolution_clock::now();
-        auto last_fps_time = last_frame_time;
-        auto render_time_accumulator = std::chrono::nanoseconds(0);
-        size_t frame_count = 0;
+        scheduler->RegisterTask(render, true);
+        scheduler->RegisterTask(inputReceiver, false, std::chrono::nanoseconds(Scheduler::SECOND_IN_NANOSECONDS / 60));
+        scheduler->RegisterTask(physics, false, std::chrono::nanoseconds(Scheduler::SECOND_IN_NANOSECONDS / 60));
+        scheduler->RegisterTask(actor_controller, false, std::chrono::nanoseconds(Scheduler::SECOND_IN_NANOSECONDS / 30));
 
-        renderer_->SetStartRenderFromRow(1);
-
-        while (is_running_) {
-            auto frame_start = std::chrono::high_resolution_clock::now();
-            auto delta_time = frame_start - last_frame_time;
-            accumulated_delta_time += delta_time;
-            frame_count++;
-
-            auto time_since_last_fps = std::chrono::duration_cast<std::chrono::milliseconds>(frame_start - last_fps_time);
-            if (time_since_last_fps.count() >= 1000) {
-                float fps = frame_count / (time_since_last_fps.count() / 1000.0f);
-                float avg_render_time = frame_count > 0 ? std::chrono::duration_cast<std::chrono::milliseconds>(render_time_accumulator).count() / static_cast<float>(frame_count) : 0;
-                float avg_frame_time = frame_count > 0 ? time_since_last_fps.count() / static_cast<float>(frame_count) : 0;
-
-                SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), {0, 0});
-
-                std::cout << std::format(
-                    "FPS: {:.0f}, AVG render time: {:.2f}ms, AVG frame time: "
-                    "{:.2f}ms.",
-                    fps, avg_render_time, avg_frame_time);
-
-                frame_count = 0;
-                render_time_accumulator = std::chrono::nanoseconds(0);
-                last_fps_time = frame_start;
-            }
-
-            if (accumulated_delta_time.count() >= fixed_update_step) {
-                input_receiver_->Update();
-                actor_controller_->Update(*entity_manager_, input_receiver_->GetInputEvents());
-                accumulated_delta_time -= std::chrono::nanoseconds(fixed_update_step);
-            }
-            canvas_->Update(*entity_manager_, *renderer_);
-            auto render_time_start = std::chrono::high_resolution_clock::now();
-            renderer_->RenderFrame();
-            renderer_->ResetFrame();
-            auto render_time_elapsed = std::chrono::high_resolution_clock::now() - render_time_start;
-            render_time_accumulator += render_time_elapsed;
-
-            // auto frame_duration = std::chrono::duration_cast<std::chrono::microseconds>(frame_end - frame_start);
-            // if (frame_duration < std::chrono::microseconds(SECOND_IN_MICROSECONDS / 60)) {
-            //     std::this_thread::sleep_for(std::chrono::microseconds(SECOND_IN_MICROSECONDS / 60) - frame_duration);
-            // }
-
-            last_frame_time = frame_start;
+        while (true) {
+            scheduler->Update(std::chrono::high_resolution_clock::now().time_since_epoch());
         }
+
+        // auto accumulated_delta_time = std::chrono::nanoseconds(0);
+        // size_t fixed_update_step = SECOND_IN_NANOSECONDS / 30.0f;
+        //
+        // auto last_frame_time = std::chrono::high_resolution_clock::now();
+        // auto last_fps_time = last_frame_time;
+        // auto render_time_accumulator = std::chrono::nanoseconds(0);
+        // size_t frame_count = 0;
+        //
+        // renderer_->SetStartRenderFromRow(1);
+        //
+        // while (is_running_) {
+        //     auto frame_start = std::chrono::high_resolution_clock::now();
+        //     auto delta_time = frame_start - last_frame_time;
+        //     accumulated_delta_time += delta_time;
+        //     frame_count++;
+        //
+        //     auto time_since_last_fps = std::chrono::duration_cast<std::chrono::milliseconds>(frame_start - last_fps_time);
+        //     if (time_since_last_fps.count() >= 1000) {
+        //         float fps = frame_count / (time_since_last_fps.count() / 1000.0f);
+        //         float avg_render_time = frame_count > 0 ? std::chrono::duration_cast<std::chrono::milliseconds>(render_time_accumulator).count() / static_cast<float>(frame_count) : 0;
+        //         float avg_frame_time = frame_count > 0 ? time_since_last_fps.count() / static_cast<float>(frame_count) : 0;
+        //
+        //         SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), {0, 0});
+        //
+        //         std::cout << std::format(
+        //             "FPS: {:.0f}, AVG render time: {:.2f}ms, AVG frame time: "
+        //             "{:.2f}ms.",
+        //             fps, avg_render_time, avg_frame_time);
+        //
+        //         frame_count = 0;
+        //         render_time_accumulator = std::chrono::nanoseconds(0);
+        //         last_fps_time = frame_start;
+        //     }
+        //
+        //     if (accumulated_delta_time.count() >= fixed_update_step) {
+        //         input_receiver_->Update();
+        //         actor_controller_->Update(*entity_manager_, input_receiver_->GetInputEvents());
+        //         accumulated_delta_time -= std::chrono::nanoseconds(fixed_update_step);
+        //     }
+        //     canvas_->Update(*entity_manager_, *renderer_);
+        //     auto render_time_start = std::chrono::high_resolution_clock::now();
+        //     renderer_->RenderFrame();
+        //     renderer_->ResetFrame();
+        //     auto render_time_elapsed = std::chrono::high_resolution_clock::now() - render_time_start;
+        //     render_time_accumulator += render_time_elapsed;
+        //
+        //     // auto frame_duration = std::chrono::duration_cast<std::chrono::microseconds>(frame_end - frame_start);
+        //     // if (frame_duration < std::chrono::microseconds(SECOND_IN_MICROSECONDS / 60)) {
+        //     //     std::this_thread::sleep_for(std::chrono::microseconds(SECOND_IN_MICROSECONDS / 60) - frame_duration);
+        //     // }
+        //
+        //     last_frame_time = frame_start;
+        // }
     }
 }  // namespace Engine

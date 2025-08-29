@@ -3,7 +3,6 @@ project(ascii_engine)
 
 set(CMAKE_CXX_STANDARD 26)
 add_executable(ascii_engine src/main.cpp
-        src/core/graphics/IRender.h
         src/core/engine/io/IInput.h
         src/core/engine/Utils/Console.cpp
         src/core/engine/Utils/Console.h
@@ -26,4 +25,5 @@ add_executable(ascii_engine src/main.cpp
         src/core/graphics/Renderer.cpp
         src/core/engine/scheduler/Scheduler.cpp
         src/core/engine/scheduler/Scheduler.h
+        src/core/engine/scheduler/Scheduler.cpp
 )
